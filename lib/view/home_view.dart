@@ -19,14 +19,7 @@ class _HomeViewState extends State<HomeView> {
   String? userEmail;
   String? baseEncode;
   Uint8List? bytesImage;
-
-  Future<void> getUserImage() async {
-    final preferences = await SharedPreferences.getInstance();
-    setState(() {
-      baseEncode = preferences.getString("key") ?? "";
-    });
-  }
-
+  Uint8List? SEKIL;
   @override
   void initState() {
     getUserImage();
@@ -44,9 +37,17 @@ class _HomeViewState extends State<HomeView> {
 
     setState(() {
       bytesImage = const Base64Decoder().convert(baseEncode);
-    });
 
-    preferences.setString("key", baseEncode);
+      SEKIL = bytesImage;
+      preferences.setString("baseEncode", baseEncode);
+    });
+  }
+
+  void getUserImage() async {
+    final preferences = await SharedPreferences.getInstance();
+    setState(() {
+      baseEncode = preferences.getString("baseEncode") ?? "";
+    });
   }
 
   @override
@@ -57,16 +58,17 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            bytesImage != null
+            SEKIL != null
                 ? Image.memory(
                     width: 200,
                     height: 200,
-                    bytesImage!,
+                    SEKIL!,
                   )
                 : const SizedBox(),
             context.emptySizedHeightBoxLow3x,
             ElevatedButton(
                 onPressed: () {
+                  print(SEKIL);
                   _pickImageBase64();
                 },
                 child: Text(TextConstants.pickImageFromGallery)),
