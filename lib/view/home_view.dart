@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView> {
   Future<void> getUserImage() async {
     final preferences = await SharedPreferences.getInstance();
     setState(() {
-      baseEncode = preferences.getString("baseEncode") ?? "";
+      baseEncode = preferences.getString("key") ?? "";
     });
   }
 
