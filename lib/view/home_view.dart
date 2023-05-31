@@ -20,11 +20,11 @@ class _HomeViewState extends State<HomeView> {
   String? baseEncode;
   Uint8List? bytesImage;
 
-  Future<void> getUserEmail() async {
+  Future<void> getUserImage() async {
     final preferences = await SharedPreferences.getInstance();
     setState(() {
-      baseEncode = preferences.getString("baseEncode") ?? '';
-      userEmail = preferences.getString('email') ?? "";
+      baseEncode = preferences.getString("baseEncode") ??
+          'iVBORw0KGgoAAAANSUhEUgAAADMAAAAzCAYAAAA6oTAqAAAAEXRFWHRTb2Z0d2FyZQBwbmdjcnVzaEB1SfMAAABQSURBVGje7dSxCQBACARB+2/ab8BEeQNhFi6WSYzYLYudDQYGBgYGBgYGBgYGBgYGBgZmcvDqYGBgmhivGQYGBgYGBgYGBgYGBgYGBgbmQw+P/eMrC5UTVAAAAABJRU5ErkJggg==';
     });
   }
 
@@ -34,7 +34,6 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
   }
 
-  // File? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
   void _pickImageBase64() async {
@@ -43,15 +42,10 @@ class _HomeViewState extends State<HomeView> {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image == null) return;
     var baseEncode = base64Encode(await image.readAsBytes());
-
+    preferences.setString("key", baseEncode);
     setState(() {
       bytesImage = const Base64Decoder().convert(baseEncode);
-
-      preferences.setString("key", baseEncode);
     });
-
-    // print("bytesImage $bytesImage");
-    //   print(base64);
   }
 
   @override
