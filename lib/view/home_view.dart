@@ -30,7 +30,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    getUserEmail();
+    getUserImage();
     super.initState();
   }
 
