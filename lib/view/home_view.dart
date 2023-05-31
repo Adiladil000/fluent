@@ -16,37 +16,39 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  String? userEmail;
-  String? baseEncode;
   Uint8List? bytesImage;
-  Uint8List? SEKIL;
+  String? base64EncodedImage;
+
+  Uint8List? imageBytesFromPref;
+  String? encodedBase64FromPref;
+
   @override
   void initState() {
-    getUserImage();
     super.initState();
+    getImage();
   }
 
   final ImagePicker _picker = ImagePicker();
 
-  void _pickImageBase64() async {
+  Future<void> _pickImageBase64() async {
     final preferences = await SharedPreferences.getInstance();
 
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image == null) return;
-    var baseEncode = base64Encode(await image.readAsBytes());
+    base64EncodedImage = base64Encode(await image.readAsBytes());
 
     setState(() {
-      bytesImage = const Base64Decoder().convert(baseEncode);
-
-      SEKIL = bytesImage;
-      preferences.setString("baseEncode", baseEncode);
+      bytesImage = const Base64Decoder().convert(base64EncodedImage!);
+      encodedBase64FromPref = base64EncodedImage;
+      preferences.setString("base64EncodedImage", base64EncodedImage!);
     });
   }
 
-  void getUserImage() async {
+  Future<void> getImage() async {
     final preferences = await SharedPreferences.getInstance();
     setState(() {
-      baseEncode = preferences.getString("baseEncode") ?? "";
+      encodedBase64FromPref = preferences.getString("base64EncodedImage") ?? "";
+      imageBytesFromPref = const Base64Decoder().convert(encodedBase64FromPref!);
     });
   }
 
@@ -58,18 +60,19 @@ class _HomeViewState extends State<HomeView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SEKIL != null
+            imageBytesFromPref != null
                 ? Image.memory(
                     width: 200,
                     height: 200,
-                    SEKIL!,
+                    imageBytesFromPref!,
                   )
                 : const SizedBox(),
             context.emptySizedHeightBoxLow3x,
             ElevatedButton(
-                onPressed: () {
-                  print(SEKIL);
-                  _pickImageBase64();
+                onPressed: () async {
+                  setState(() {
+                    _pickImageBase64().whenComplete(() => getImage());
+                  });
                 },
                 child: Text(TextConstants.pickImageFromGallery)),
             context.emptySizedHeightBoxLow3x,
@@ -79,7 +82,7 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.pushReplacementNamed(context, "/");
                   });
                 },
-                child: Text(TextConstants.logot)),
+                child: Text(TextConstants.loguot)),
           ],
         ),
       ),

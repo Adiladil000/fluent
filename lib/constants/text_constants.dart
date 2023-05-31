@@ -1,5 +1,5 @@
 class TextConstants {
-  static String logot = 'LOGOUT';
+  static String loguot = 'LOGOUT';
   static String login = 'LOGIN';
   static String password = 'Password';
   static String email = 'Email';
