@@ -15,7 +15,7 @@ class LoginViewModel with ChangeNotifier {
   String? get token => _token;
   bool get isLoggedIn => _token != null;
 
-  Future<void> signIn(BuildContext context, LoginModel loginModel) async {
+  Future<void> signIn(context, LoginModel loginModel) async {
     final response = await http.post(
       Uri.parse("${TextConstants.baseUrl}/login"),
       headers: <String, String>{
@@ -47,12 +47,13 @@ class LoginViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> logout(BuildContext context) async {
+  Future<void> logout(context) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.remove('token');
     _token = null;
 
-    Navigator.pushReplacementNamed(context, '/');
+    await preferences.remove('base64EncodedImage');
+
     notifyListeners();
   }
 }

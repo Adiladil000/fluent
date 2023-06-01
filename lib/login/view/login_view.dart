@@ -1,12 +1,12 @@
 import 'package:fluent/constants/color_constants.dart';
 import 'package:fluent/constants/text_constants.dart';
-import 'package:fluent/login/model/login_model.dart';
-import 'package:fluent/login/view_model/login_view_model.dart';
 import 'package:fluent/widgets/custom_text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
 import '../../paths/image_paths.dart';
+import '../model/login_model.dart';
+import '../view_model/login_view_model.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -40,7 +40,11 @@ class _LoginViewState extends State<LoginView> {
                     onPressed: () async {
                       final email = _emailController.text;
                       final password = _passwordController.text;
-                      LoginViewModel().signIn(context, LoginModel(email, password));
+                      if (email.isNotEmpty && email.contains("@") && password.isNotEmpty && password.length > 7) {
+                        await LoginViewModel().signIn(context, LoginModel(email, password));
+                      } else {
+                        null;
+                      }
                     },
                     child: Text(TextConstants.login, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)))
               ],

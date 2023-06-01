@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
                 },
               ),
           '/home': (context) => const HomeView(),
+          '/login': (context) => const LoginView(),
         },
       ),
     );

@@ -28,6 +28,13 @@ class _HomeViewState extends State<HomeView> {
     getImage();
   }
 
+  @override
+  void dispose() {
+    LoginViewModel().logout(context);
+
+    super.dispose();
+  }
+
   final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImageBase64() async {
@@ -35,10 +42,11 @@ class _HomeViewState extends State<HomeView> {
 
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image == null) return;
-    base64EncodedImage = base64Encode(await image.readAsBytes());
+    final imageAsByte = await image.readAsBytes();
+    base64EncodedImage = base64Encode(imageAsByte);
 
     setState(() {
-      bytesImage = const Base64Decoder().convert(base64EncodedImage!);
+      bytesImage = imageAsByte;
       encodedBase64FromPref = base64EncodedImage;
       preferences.setString("base64EncodedImage", base64EncodedImage!);
     });
@@ -47,8 +55,14 @@ class _HomeViewState extends State<HomeView> {
   Future<void> getImage() async {
     final preferences = await SharedPreferences.getInstance();
     setState(() {
-      encodedBase64FromPref = preferences.getString("base64EncodedImage") ?? "";
-      imageBytesFromPref = const Base64Decoder().convert(encodedBase64FromPref!);
+      //  if (preferences.getString("base64EncodedImage") == null) return;
+
+      try {
+        encodedBase64FromPref = preferences.getString("base64EncodedImage");
+        imageBytesFromPref = const Base64Decoder().convert(encodedBase64FromPref!);
+      } catch (e) {
+        (e.toString());
+      }
     });
   }
 
@@ -77,10 +91,8 @@ class _HomeViewState extends State<HomeView> {
                 child: Text(TextConstants.pickImageFromGallery)),
             context.emptySizedHeightBoxLow3x,
             ElevatedButton(
-                onPressed: () {
-                  LoginViewModel().logout(context).then((_) {
-                    Navigator.pushReplacementNamed(context, "/");
-                  });
+                onPressed: () async {
+                  await LoginViewModel().logout(context).whenComplete(() => Navigator.pushReplacementNamed(context, '/login'));
                 },
                 child: Text(TextConstants.loguot)),
           ],
