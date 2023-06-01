@@ -1,5 +1,7 @@
 class TextConstants {
-  static String loguot = 'LOGOUT';
+  static String logout = 'LOGOUT';
+  static String loguotforDrawer = 'Log Out';
+
   static String login = 'LOGIN';
   static String password = 'Password';
   static String email = 'Email';

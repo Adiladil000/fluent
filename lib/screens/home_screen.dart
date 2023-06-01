@@ -22,7 +22,7 @@ class HomeScreen extends StatelessWidget {
         elevation: 1,
         backgroundColor: Colors.transparent.withOpacity(0.2),
         child: const Padding(
-          padding: EdgeInsets.only(top: 5),
+          padding: EdgeInsets.only(left: 15, top: 30),
           child: ListViewForDriwer(),
         ),
       ),

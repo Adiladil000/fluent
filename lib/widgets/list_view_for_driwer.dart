@@ -32,7 +32,7 @@ class _ListViewForDriwerState extends State<ListViewForDriwer> {
                 LoginViewModel().logout(context);
               });
             },
-            text: TextConstants.loguot)
+            text: TextConstants.loguotforDrawer)
       ],
     );
   }
