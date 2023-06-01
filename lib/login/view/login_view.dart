@@ -1,5 +1,6 @@
 import 'package:fluent/constants/color_constants.dart';
 import 'package:fluent/constants/text_constants.dart';
+import 'package:fluent/utilities/error_snack_bar.dart';
 import 'package:fluent/widgets/custom_text_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
@@ -40,10 +41,11 @@ class _LoginViewState extends State<LoginView> {
                     onPressed: () async {
                       final email = _emailController.text;
                       final password = _passwordController.text;
+
                       if (email.isNotEmpty && email.contains("@") && password.isNotEmpty && password.length > 7) {
                         await LoginViewModel().signIn(context, LoginModel(email, password));
                       } else {
-                        null;
+                        errorSnackBar(context, TextConstants.checkYourEmailOrPassword);
                       }
                     },
                     child: Text(TextConstants.login, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)))

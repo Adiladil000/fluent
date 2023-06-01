@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/text_constants.dart';
+import '../../utilities/error_snack_bar.dart';
 
 class LoginViewModel with ChangeNotifier {
 //  eve.holt@reqres.in
@@ -36,7 +37,7 @@ class LoginViewModel with ChangeNotifier {
 
       await Navigator.pushReplacementNamed(context, '/home');
     } else {
-      print('error');
+      errorSnackBar(context, TextConstants.emailOrPasswordIsIncorrect);
     }
     notifyListeners();
   }
