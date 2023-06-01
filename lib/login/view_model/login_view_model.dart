@@ -55,6 +55,8 @@ class LoginViewModel with ChangeNotifier {
 
     await preferences.remove('accountImageAsBase64');
 
+    await Navigator.pushReplacementNamed(context, '/login');
+
     notifyListeners();
   }
 }

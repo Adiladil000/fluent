@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:fluent/constants/color_constants.dart';
 import 'package:fluent/constants/text_constants.dart';
-import 'package:fluent/login/view_model/login_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -26,13 +25,6 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
   void initState() {
     super.initState();
     getImage();
-  }
-
-  @override
-  void dispose() {
-    LoginViewModel().logout(context);
-
-    super.dispose();
   }
 
   final ImagePicker _picker = ImagePicker();
@@ -61,36 +53,51 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
         fromPrefAccountImageAsBase64 = preferences.getString("accountImageAsBase64");
         imageBytesFromPref = const Base64Decoder().convert(fromPrefAccountImageAsBase64!);
       } catch (e) {
-        (e.toString());
+        print(e.toString());
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: ColorContants.backgroundColor,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            imageBytesFromPref != null
-                ? Image.memory(
-                    width: 200,
-                    height: 200,
-                    imageBytesFromPref!,
-                  )
-                : const SizedBox(),
-            context.emptySizedHeightBoxLow3x,
-            ElevatedButton(
-                onPressed: () async {
-                  setState(() {
-                    _pickImageBase64().whenComplete(() => getImage());
-                  });
-                },
-                child: Text(TextConstants.pickImageFromGallery)),
-            context.emptySizedHeightBoxLow3x,
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pushReplacementNamed(context, '/home');
+
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: ColorContants.backgroundColor,
+        appBar: AppBar(
+          backgroundColor: ColorContants.backgroundColor,
+          leading: IconButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/home');
+              },
+              icon: const Icon(color: Colors.white, Icons.arrow_back_outlined)),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              imageBytesFromPref != null
+                  ? Image.memory(
+                      width: 200,
+                      height: 200,
+                      imageBytesFromPref!,
+                    )
+                  : const SizedBox(),
+              context.emptySizedHeightBoxLow3x,
+              ElevatedButton(
+                  onPressed: () async {
+                    setState(() {
+                      _pickImageBase64().whenComplete(() => getImage());
+                    });
+                  },
+                  child: Text(TextConstants.pickImageFromGallery)),
+              context.emptySizedHeightBoxLow3x,
+            ],
+          ),
         ),
       ),
     );

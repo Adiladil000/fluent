@@ -1,4 +1,5 @@
 import 'package:fluent/screens/home_screen.dart';
+import 'package:fluent/screens/upload_image_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +31,9 @@ class MyApp extends StatelessWidget {
                   }
                 },
               ),
-          "/home": (context) => const HomeScreen()
+          "/home": (context) => const HomeScreen(),
+          "/login": (context) => const LoginView(),
+          "/uploadImage": (context) => const UploadImageScreen()
         },
       ),
     );

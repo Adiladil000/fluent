@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../constants/text_constants.dart';
 import '../login/view_model/login_view_model.dart';
-import '../screens/upload_image_screen.dart';
 import 'custom_list_tile_for_drawer.dart';
 
 class ListViewForDriwer extends StatefulWidget {
@@ -21,13 +20,7 @@ class _ListViewForDriwerState extends State<ListViewForDriwer> {
           icon: Icons.add_a_photo_outlined,
           onTap: () {
             Navigator.pop(context);
-
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UploadImageScreen(),
-                ));
-            // Navigator.pushReplacementNamed(context, "/upload_image");
+            Navigator.pushNamed(context, "/uploadImage");
           },
           text: TextConstants.uploadImage,
         ),
@@ -35,7 +28,8 @@ class _ListViewForDriwerState extends State<ListViewForDriwer> {
             icon: Icons.logout_rounded,
             onTap: () {
               setState(() {
-                LoginViewModel().logout(context).whenComplete(() => Navigator.pushReplacementNamed(context, '/'));
+                Navigator.pop(context);
+                LoginViewModel().logout(context);
               });
             },
             text: TextConstants.loguot)
