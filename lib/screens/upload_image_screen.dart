@@ -49,12 +49,8 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
     setState(() {
       if (preferences.getString("accountImageAsBase64") == null) return;
 
-      try {
-        fromPrefAccountImageAsBase64 = preferences.getString("accountImageAsBase64");
-        imageBytesFromPref = const Base64Decoder().convert(fromPrefAccountImageAsBase64!);
-      } catch (e) {
-        print(e.toString());
-      }
+      fromPrefAccountImageAsBase64 = preferences.getString("accountImageAsBase64");
+      imageBytesFromPref = const Base64Decoder().convert(fromPrefAccountImageAsBase64!);
     });
   }
 
@@ -63,7 +59,6 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
     return WillPopScope(
       onWillPop: () async {
         Navigator.pushReplacementNamed(context, '/home');
-
         return true;
       },
       child: Scaffold(
