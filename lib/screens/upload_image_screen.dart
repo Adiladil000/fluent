@@ -8,19 +8,19 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kartal/kartal.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+class UploadImageScreen extends StatefulWidget {
+  const UploadImageScreen({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<UploadImageScreen> createState() => _UploadImageScreenState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _UploadImageScreenState extends State<UploadImageScreen> {
   Uint8List? bytesImage;
-  String? base64EncodedImage;
+  String? accountImageAsBase64;
 
   Uint8List? imageBytesFromPref;
-  String? encodedBase64FromPref;
+  String? fromPrefAccountImageAsBase64;
 
   @override
   void initState() {
@@ -43,23 +43,23 @@ class _HomeViewState extends State<HomeView> {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
     if (image == null) return;
     final imageAsByte = await image.readAsBytes();
-    base64EncodedImage = base64Encode(imageAsByte);
+    accountImageAsBase64 = base64Encode(imageAsByte);
 
     setState(() {
       bytesImage = imageAsByte;
-      encodedBase64FromPref = base64EncodedImage;
-      preferences.setString("base64EncodedImage", base64EncodedImage!);
+      fromPrefAccountImageAsBase64 = accountImageAsBase64;
+      preferences.setString("accountImageAsBase64", accountImageAsBase64!);
     });
   }
 
   Future<void> getImage() async {
     final preferences = await SharedPreferences.getInstance();
     setState(() {
-      //  if (preferences.getString("base64EncodedImage") == null) return;
+      if (preferences.getString("accountImageAsBase64") == null) return;
 
       try {
-        encodedBase64FromPref = preferences.getString("base64EncodedImage");
-        imageBytesFromPref = const Base64Decoder().convert(encodedBase64FromPref!);
+        fromPrefAccountImageAsBase64 = preferences.getString("accountImageAsBase64");
+        imageBytesFromPref = const Base64Decoder().convert(fromPrefAccountImageAsBase64!);
       } catch (e) {
         (e.toString());
       }
@@ -90,11 +90,6 @@ class _HomeViewState extends State<HomeView> {
                 },
                 child: Text(TextConstants.pickImageFromGallery)),
             context.emptySizedHeightBoxLow3x,
-            ElevatedButton(
-                onPressed: () async {
-                  await LoginViewModel().logout(context).whenComplete(() => Navigator.pushReplacementNamed(context, '/login'));
-                },
-                child: Text(TextConstants.loguot)),
           ],
         ),
       ),

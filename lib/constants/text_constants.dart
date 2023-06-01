@@ -5,4 +5,5 @@ class TextConstants {
   static String email = 'Email';
   static String baseUrl = 'https://reqres.in/api';
   static String pickImageFromGallery = 'Pick image from Gallery';
+  static String uploadImage = 'Upload Image';
 }

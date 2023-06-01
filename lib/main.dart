@@ -1,4 +1,4 @@
-import 'package:fluent/view/home_view.dart';
+import 'package:fluent/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,14 +24,13 @@ class MyApp extends StatelessWidget {
           '/': (context) => Consumer<LoginViewModel>(
                 builder: (context, loginViewModel, _) {
                   if (loginViewModel.isLoggedIn) {
-                    return const HomeView();
+                    return const HomeScreen();
                   } else {
                     return const LoginView();
                   }
                 },
               ),
-          '/home': (context) => const HomeView(),
-          '/login': (context) => const LoginView(),
+          "/home": (context) => const HomeScreen()
         },
       ),
     );

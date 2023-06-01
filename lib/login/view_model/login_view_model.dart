@@ -33,7 +33,8 @@ class LoginViewModel with ChangeNotifier {
       final preferences = await SharedPreferences.getInstance();
       await preferences.setString('token', _token!);
       print(_token);
-      Navigator.pushReplacementNamed(context, '/home');
+
+      await Navigator.pushReplacementNamed(context, '/home');
     } else {
       print('error');
     }
@@ -52,7 +53,7 @@ class LoginViewModel with ChangeNotifier {
     await preferences.remove('token');
     _token = null;
 
-    await preferences.remove('base64EncodedImage');
+    await preferences.remove('accountImageAsBase64');
 
     notifyListeners();
   }
