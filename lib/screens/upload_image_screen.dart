@@ -77,8 +77,8 @@ class _UploadImageScreenState extends State<UploadImageScreen> {
             children: [
               imageBytesFromPref != null
                   ? Image.memory(
-                      width: 200,
-                      height: 200,
+                      width: 300,
+                      height: 300,
                       imageBytesFromPref!,
                     )
                   : const SizedBox(),

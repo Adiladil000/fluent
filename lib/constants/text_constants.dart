@@ -10,6 +10,7 @@ class TextConstants {
 
   // Url
   static String baseUrl = 'https://reqres.in/api';
+  static String mockBaseUrl = "https://643eed9cb9e6d064beeb343e.mockapi.io";
 
   // Image
   static String pickImageFromGallery = 'Pick image from Gallery';
